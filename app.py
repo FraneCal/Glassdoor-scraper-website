@@ -10,9 +10,6 @@ JOBS_FILE = "../jobs.json"
 SCRAPER_FILE = "scraper_sb.py"
 STOP_FILE = "stop_signal.txt"
 
-# Clear jobs file at startup
-open(JOBS_FILE, "w", encoding="utf-8").write("[]")
-
 def load_jobs(filepath=JOBS_FILE):
     try:
         with open(filepath, "r", encoding="utf-8") as f:
@@ -48,6 +45,8 @@ def main():
             if not job_name or not location:
                 st.warning("Please enter both Job Name and Location.")
             else:
+                # Clear results only when starting a new scrape
+                open(JOBS_FILE, "w", encoding="utf-8").write("[]")
                 st.session_state.job_proc = run_scraper(job_name, location)
                 st.session_state.scraping = True
 
